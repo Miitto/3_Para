@@ -1,3 +1,5 @@
+#include "script_component.hpp"
+
 params ["_obj"];
 
 _bb = 0 boundingBoxReal _obj;

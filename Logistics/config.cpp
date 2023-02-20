@@ -1,6 +1,8 @@
+#include "script_component.hpp"
+
 class CfgPatches
 {   
-    class Para_Logistics
+    class DOUBLE(ADDON,COMPONENT)
     {
     name="3 Para Logistics";
     units[] = {};
@@ -18,30 +20,30 @@ class CfgFunctions
 
 class Extended_Init_EventHandlers {
     class StaticWeapon {
-        class Para {
-            init = "_this call Para_fnc_addConnect";
+        class DOUBLE(ADDON,COMPONENT) {
+            init = QUOTE(_this call FUNC(addConnect));
         };
     };
     class Thing {
-        class Para {
-            init = "_this call Para_fnc_addConnect";
+        class DOUBLE(ADDON,COMPONENT) {
+            init = QUOTE(_this call FUNC(addConnect));
             exclude[] = {"ModuleEmpty_F", "ThingEffect", "Wreck"};
         };
     };
     class NonStrategic {
-        class Para {
-            init = "_this call Para_fnc_addConnect";
+        class DOUBLE(ADDON,COMPONENT) {
+            init = QUOTE(_this call FUNC(addConnect));
         };
     };
     class Land_Camping_Light_F {
-        class Para {
-            init = "_this call Para_fnc_addConnect";
+        class DOUBLE(ADDON,COMPONENT) {
+            init = QUOTE(_this call FUNC(addConnect));
         };
     };
 };
 
 class Extended_PreInit_EventHandlers {
-    class ADDON {
+    class DOUBLE(ADDON,COMPONENT) {
         init = call compileScript ["\3_Para\Logistics\XEH_preInit.sqf"];
     };
 };

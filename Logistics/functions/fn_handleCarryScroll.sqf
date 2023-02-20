@@ -1,3 +1,5 @@
+#include "script_component.hpp"
+
 params ["_scrollAmount"];
 
 private _unit = ACE_player;
