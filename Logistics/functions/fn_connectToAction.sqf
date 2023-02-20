@@ -1,7 +1,9 @@
+#include "script_component.hpp"
+
 params ["_obj", "_veh"];
 
-Para_connectObj = _obj;
-Para_connectVeh = _veh;
+GVAR(connectObj) = _obj;
+GVAR(connectVeh) = _veh;
 
 [player, _obj] call ace_dragging_fnc_carryObject; // Pickup Object
 
@@ -12,39 +14,39 @@ player setVariable ["ace_dragging_ReleaseActionID", [ // Add our own Drop EH to 
     player, "DefaultAction",
     {!isNull ((_this select 0) getVariable ["ace_dragging_carriedObject", objNull])},
     {
-		Para_connectObj = player getVariable ["ace_dragging_carriedObject", objNull];
-		[player, Para_connectObj] call ace_dragging_fnc_dropObject_carry; // Drop Object
-		if (!isNil "Para_connectAreaDrawEH") then {
-			removeMissionEventHandler["Draw3D", Para_connectAreaDrawEH];
+		GVAR(connectObj) = player getVariable ["ace_dragging_carriedObject", objNull];
+		[player, GVAR(connectObj)] call ace_dragging_fnc_dropObject_carry; // Drop Object
+		if (!isNil QGVAR(connectAreaDrawEH)) then {
+			removeMissionEventHandler["Draw3D", GVAR(connectAreaDrawEH)];
 		};
-		if !([Para_connectVeh, Para_connectObj] call Para_fnc_canAttach) exitWith {
+		if !([GVAR(connectVeh), GVAR(connectObj)] call FUNC(canAttach)) exitWith {
 			[] spawn {
 				hint "Vehicle is too far Away";
 				uiSleep 5;
 				hintSilent "";
 			};
 		};
-		_offsetPos = Para_connectVeh worldToModelVisual ASLToAGL (getPosASL Para_connectObj); // Get Attach To Offset
-		_bb = 0 boundingBoxReal Para_connectObj;
+		_offsetPos = GVAR(connectVeh) worldToModelVisual ASLToAGL (getPosASL GVAR(connectObj)); // Get Attach To Offset
+		_bb = 0 boundingBoxReal GVAR(connectObj);
 		_minZ = (_bb select 0) select 2;
 		_offsetPos set [2, (_offsetPos select 2) - _minZ]; // Adjust so Bottom of model is where Center was
-		_Dir = Para_connectVeh vectorWorldToModel (vectorDir Para_connectObj); // Get Rotation
-		_Up = (vectorUp Para_connectObj);
-		Para_connectObj attachTo [Para_connectVeh, _offsetPos];
-		Para_connectObj setVectorDirAndUp[_Dir, _Up];
-		Para_connectObj setVariable ["Para_connectedVeh", Para_connectVeh];
-		Para_connectObj = objNull;
-		Para_connectVeh = objNull;
+		_Dir = GVAR(connectVeh) vectorWorldToModel (vectorDir GVAR(connectObj)); // Get Rotation
+		_Up = (vectorUp GVAR(connectObj));
+		GVAR(connectObj) attachTo [GVAR(connectVeh), _offsetPos];
+		GVAR(connectObj) setVectorDirAndUp[_Dir, _Up];
+		GVAR(connectObj) setVariable [QGVAR(connectVeh), GVAR(connectVeh)];
+		GVAR(connectObj) = objNull;
+		GVAR(connectVeh) = objNull;
 	}
 ] call ace_common_fnc_addActionEventHandler];
 
-if (Para_DrawConnectArea) then {
-	Para_connectAreaDrawEH = addMissionEventHandler ["Draw3D", {
+if (GVAR(DrawConnectArea)) then {
+	GVAR(connectAreaDrawEH) = addMissionEventHandler ["Draw3D", {
 		_color = [0,1,0,1];
-		if !([Para_connectVeh, Para_connectObj] call Para_fnc_canAttach) then {
+		if !([GVAR(connectVeh), GVAR(connectObj)] call FUNC(canAttach)) then {
 			_color = [1,0,0,1];
 		};
-		_bboxr = Para_connectVeh call Para_fnc_getBoundingCorners;
+		_bboxr = GVAR(connectVeh) call FUNC(getBoundingCorners);
 		for "_i" from 0 to 7 step 2 do {
 			drawLine3D [
 				_bboxr select _i,

@@ -1,5 +1,7 @@
+#include "script_component.hpp"
+
 [
-    "Para_DrawConnectArea",
+    QGVAR(DrawConnectArea),
     "CHECKBOX",
     ["Draw Connect Area", "Draw the holographic box showing area that will allow connection"],
     ["3 Para", "Logistics"],
@@ -8,7 +10,7 @@
 ] call CBA_fnc_addSetting;
 
 [
-    "Para_acceptableCorners",
+    QGVAR(acceptableCorners),
     "SLIDER",
     ["Requried Cornes", "Required Corners of the object to be in the bounding box of the vehicle. More corners may cause issues for larger items"],
     ["3 Para", "Logistics"],

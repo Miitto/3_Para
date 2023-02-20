@@ -1,16 +1,18 @@
+#include "script_component.hpp"
+
 params["_veh", "_obj"];
 
 _objBB = 0 boundingBoxReal _obj;
 _objMin = _obj modelToWorld (_objBB select 0);
 _objMax = _obj modelToWorld (_objBB select 1);
 
-if (Para_acceptableCorners == 0) exitWith {
+if (GVAR(acceptableCorners) == 0) exitWith {
 	true
 };
 
 _cornerCnt = 0;
 
-_corners = Para_connectObj call Para_fnc_getBoundingCorners;
+_corners = GVAR(connectObj) call FUNC(getBoundingCorners);
 
 _inHelper = {
 	params ["_pt0", "_pt1"];
@@ -26,7 +28,7 @@ _inHelper = {
 	};
 } forEach _corners;
 
-if (_cornerCnt >= Para_acceptableCorners) exitWith {
+if (_cornerCnt >= GVAR(acceptableCorners)) exitWith {
 	true
 };
 

@@ -1,6 +1,8 @@
-class Para_Logistics
+#include "script_component.hpp"
+
+class DOUBLE(ADDON,COMPONENT)
 {
-    tag="Para";
+    tag=QUOTE(DOUBLE(ADDON,COMPONENT));
     class Func {
       file="\3_Para\Logistics\functions";
       class addConnect{};

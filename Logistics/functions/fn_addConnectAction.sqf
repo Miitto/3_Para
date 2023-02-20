@@ -1,10 +1,10 @@
-#define MAX_LOAD_DISTANCE 10
+#include "script_component.hpp"
 
 params ["_target"];
 
 private _statement = {
     params ["_target", "_player", "_vehicle"];
-    [_target, _vehicle] call Para_fnc_connectToAction;
+    [_target, _vehicle] call FUNC(connectToAction);
 };
 
 private _vehicles = (nearestObjects [_target, ace_cargo_cargoHolderTypes, (MAX_LOAD_DISTANCE + 10)]) select {
